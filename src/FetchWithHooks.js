@@ -5,11 +5,14 @@ function FetchWithHooks() {
   const [data, setData] = useState({ hits: [] });
   const [query, setQuery] = useState("Redux");
   const [url, setUrl] = useState("https://hn.algolia.com/api/v1/search?query=redux");
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await axios(`url}`);
+      setIsLoading(true);
+      const result = await axios(url);
       setData(result.data);
+      setIsLoading(false);
     };
     fetchData();
   }, [url]);
@@ -24,13 +27,17 @@ function FetchWithHooks() {
       <button type="button" onClick={() => setUrl(`https://hn.algolia.com/api/v1/search?query=${query}`)}>
         Search
       </button>
-      <ul>
-        {data.hits.map((item) => (
-          <li key={item.objectID}>
-            <a href={item.url}>{item.title}</a>
-          </li>
-        ))}
-      </ul>
+      {isLoading ? (
+        <div>Loading...</div>
+      ) : (
+        <ul>
+          {data.hits.map((item) => (
+            <li key={item.objectID}>
+              <a href={item.url}>{item.title}</a>
+            </li>
+          ))}
+        </ul>
+      )}
     </>
   );
 }
