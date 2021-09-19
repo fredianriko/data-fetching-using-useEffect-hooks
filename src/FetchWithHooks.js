@@ -4,23 +4,24 @@ import axios from "axios";
 function FetchWithHooks() {
   const [data, setData] = useState({ hits: [] });
   const [query, setQuery] = useState("Redux");
-  const [search, setSearch] = useState("Redux");
+  const [url, setUrl] = useState("https://hn.algolia.com/api/v1/search?query=redux");
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await axios(`https://hn.algolia.com/api/v1/search?query=${search}`);
+      const result = await axios(`url}`);
       setData(result.data);
-      console.log(result);
     };
     fetchData();
-  }, [search]);
+  }, [url]);
 
   //trigger fetching whenever there are changes to the input form, but start fetching when the search button is clicked
 
   return (
     <>
+      {/* set the query state as the input value */}
       <input type="text" value={query} onChange={(event) => setQuery(event.target.value)} />
-      <button type="button" onClick={() => setSearch(query)}>
+      {/* set the search state as the same as the query state */}
+      <button type="button" onClick={() => setUrl(`https://hn.algolia.com/api/v1/search?query=${query}`)}>
         Search
       </button>
       <ul>
